@@ -283,5 +283,42 @@ Ans:
 Q10. What is full-duplex communication?
 Ans:
 Both sides can send and receive simultaneously (TCP is full duplex).
-If you want, I can now prepare a **one-page cheat sheet** for tomorrow’s practical   or
-I can also give **expected viva questions with answers for your examiner**.
+
+
+🎙️ VIVA ANSWERS (Practical 6)
+Q1. Why do we need two servers?
+
+Ans:
+To provide two different services running on different ports. Each server listens independently.
+
+Q2. Why do we use two different ports?
+
+Ans:
+Ports differentiate services. Example:
+
+Port 6000 → Server1
+
+Port 7000 → Server2
+
+Without separate ports, clients wouldn’t know which service to connect.
+
+Q3. Do servers communicate with each other?
+
+Ans:
+No. They are completely independent processes.
+
+Q4. Do clients communicate with each other?
+
+Ans:
+No. Each client only talks to its own server.
+
+Q5. What protocol is used?
+
+Ans:
+TCP — reliable, connection-oriented, uses three-way handshake.
+
+Q6. What happens if both servers run on same port?
+
+Ans:
+Error: “Address already in use”.
+Only one server can bind to a port.
