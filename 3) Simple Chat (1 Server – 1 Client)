@@ -1,0 +1,66 @@
+#chat_server.py
+
+import socket
+
+HOST = "127.0.0.1"
+PORT = 5001
+
+def main():
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.bind((HOST, PORT))
+    s.listen(1)
+    print("Chat server listening on", (HOST, PORT))
+
+    conn, addr = s.accept()
+    print("Client connected:", addr)
+
+    while True:
+        # 1. Receive from client
+        data = conn.recv(1024)
+        if not data:
+            break
+        print("Client:", data.decode())
+
+        # 2. Send reply to client
+        reply = input("You: ")
+        conn.sendall(reply.encode())
+        if reply.lower() == "exit":
+            break
+
+    conn.close()
+    s.close()
+
+if __name__ == "__main__":
+    main()
+
+#--------------------------------------------------------------------------#
+
+#chat_client.py
+
+import socket
+
+HOST = "127.0.0.1"
+PORT = 5001
+
+def main():
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((HOST, PORT))
+    print("Connected to chat server")
+
+    while True:
+        # 1. Send message
+        msg = input("You: ")
+        s.sendall(msg.encode())
+        if msg.lower() == "exit":
+            break
+
+        # 2. Receive reply
+        data = s.recv(1024)
+        if not data:
+            break
+        print("Server:", data.decode())
+
+    s.close()
+
+if __name__ == "__main__":
+    main()
