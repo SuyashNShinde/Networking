@@ -1,0 +1,99 @@
+#Server 1 – server1.py
+
+import socket
+
+HOST = "127.0.0.1"
+PORT = 6000
+
+def main():
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.bind((HOST, PORT))
+    s.listen(1)
+    print("Server1 listening on", (HOST, PORT))
+
+    conn, addr = s.accept()
+    print("Client connected:", addr)
+
+    while True:
+        data = conn.recv(1024)
+        if not data:
+            break
+        text = data.decode()
+        print("From client:", text)
+        reply = "Server1 got: " + text
+        conn.sendall(reply.encode())
+
+    conn.close()
+    s.close()
+
+if __name__ == "__main__":
+    main()
+
+----------------------------------------------------------------------------------------------
+
+#Server 2 – server2.py
+
+import socket
+
+HOST = "127.0.0.1"
+PORT = 6001
+
+def main():
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.bind((HOST, PORT))
+    s.listen(1)
+    print("Server2 listening on", (HOST, PORT))
+
+    conn, addr = s.accept()
+    print("Client connected:", addr)
+
+    while True:
+        data = conn.recv(1024)
+        if not data:
+            break
+        text = data.decode()
+        print("From client:", text)
+        reply = "Server2 got: " + text
+        conn.sendall(reply.encode())
+
+    conn.close()
+    s.close()
+
+if __name__ == "__main__":
+    main()
+---------------------------------------------------------------------------------------------
+
+#Client choosing server – two_server_client.py
+
+import socket
+
+HOST = "127.0.0.1"
+
+def main():
+    print("1. Connect to Server1 (port 6000)")
+    print("2. Connect to Server2 (port 6001)")
+    choice = int(input("Enter choice: "))
+
+    if choice == 1:
+        port = 6000
+    else:
+        port = 6001
+
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((HOST, port))
+    print(f"Connected to server on port {port}")
+
+    while True:
+        msg = input("You: ")
+        if msg.lower() == "exit":
+            break
+        s.sendall(msg.encode())
+        data = s.recv(1024)
+        if not data:
+            break
+        print("From server:", data.decode())
+
+    s.close()
+
+if __name__ == "__main__":
+    main()
